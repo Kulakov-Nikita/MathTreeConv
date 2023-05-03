@@ -1,8 +1,8 @@
 ﻿#include<iostream>
 #include<string.h>
 #include<vector>
-#include "MathTreeConv.h"
 using namespace std;
+#include "MathTreeConv.h"
 
 int main()
 {
