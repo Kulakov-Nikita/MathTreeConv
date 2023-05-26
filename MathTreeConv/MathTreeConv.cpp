@@ -18,6 +18,11 @@ vector<string> Node::turnTreeToStringVector()
 	return vector<string>();
 }
 
+Node* Node::turnTripleToNode(vector<string> triple)
+{
+	return new Node(Var);
+}
+
 nodeType Node::getType()const
 {
 	return type;
@@ -36,4 +41,9 @@ Node* Node::getRight()const
 bool isCorrectTriple(vector<string> input)
 {
 	return false;
+}
+
+string addSubTree(Node* input)
+{
+	return "&0";
 }
