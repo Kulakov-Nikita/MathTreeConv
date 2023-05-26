@@ -7,10 +7,8 @@ vector<Node*> forest;
 
 int main(int argc, char* argv[])
 {
-	string link1 = "e://Институт/in.txt";
-	string link2 = "e://Институт/out.txt";
-	vector<string> s = readSequence(link1);
-	writeSequence(link2, s);
+	string input = "/";
+	cout << (defNodeType(input) == Div);
 	return 0;
 }
 
@@ -90,5 +88,17 @@ Node* findSubTree(string input)
 
 nodeType defNodeType(string input)
 {
+	if (input == "+")return Plus;
+	if (input == "-")return Minus;
+	if (input == "*")return Mul;
+	if (input == "/")return Div;
+	if (input == "^")return Pow;
+
+	bool isDigit = true;
+	for (auto i : input)
+	{
+		isDigit *= isdigit(i);
+	}
+	cout << endl;
 	return Unknown;
 }

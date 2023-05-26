@@ -1,4 +1,4 @@
-#include<iostream>
+п»ї#include<iostream>
 #include<string.h>
 #include<vector>
 using namespace std;
@@ -7,10 +7,10 @@ enum nodeType{Unknown,Var,Num,Plus,Minus,Mul,Div,Pow};
 class Node
 {
 private:
-	nodeType type; // Тип узла
-	float value; // Значение числа (если тип узла - число)
-	string name; // Имя переменной (если тип узла - переменная)
-	Node* left, * right; // Ссылки на потомков узла
+	nodeType type; // РўРёРї СѓР·Р»Р°
+	float value; // Р—РЅР°С‡РµРЅРёРµ С‡РёСЃР»Р° (РµСЃР»Рё С‚РёРї СѓР·Р»Р° - С‡РёСЃР»Рѕ)
+	string name; // РРјСЏ РїРµСЂРµРјРµРЅРЅРѕР№ (РµСЃР»Рё С‚РёРї СѓР·Р»Р° - РїРµСЂРµРјРµРЅРЅР°СЏ)
+	Node* left, * right; // РЎСЃС‹Р»РєРё РЅР° РїРѕС‚РѕРјРєРѕРІ СѓР·Р»Р°
 public:
 	Node() :type(Unknown), left(NULL), right(NULL) {}
 	Node(nodeType Type) :type(Type), left(NULL), right(NULL) {}
