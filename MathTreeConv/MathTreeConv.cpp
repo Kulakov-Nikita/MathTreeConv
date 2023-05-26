@@ -50,5 +50,5 @@ bool isCorrectTriple(vector<string> input)
 
 string addSubTree(Node* input)
 {
-	return "&0";
+	return "&";
 }
