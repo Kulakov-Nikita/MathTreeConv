@@ -4,6 +4,8 @@
 using namespace std;
 enum nodeType{Unknown,Var,Num,Plus,Minus,Mul,Div,Pow};
 
+void foo(int);
+
 class Node
 {
 private:

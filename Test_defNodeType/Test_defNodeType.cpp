@@ -84,7 +84,7 @@ namespace TestdefNodeType
 		}
 		TEST_METHOD(var)
 		{
-			string input = "+";
+			string input = "a";
 			try {
 				nodeType output = defNodeType(input);
 				Assert::IsTrue(output == Var);
@@ -98,6 +98,8 @@ namespace TestdefNodeType
 		{
 			string input = "&0";
 			try {
+				Node* node = new Node(Plus);
+				addSubTree(node);
 				nodeType output = defNodeType(input);
 				Assert::IsTrue(output == Plus);
 			}
@@ -109,14 +111,11 @@ namespace TestdefNodeType
 		TEST_METHOD(IncorrectType)
 		{
 			string input = "!";
-			try {
-				nodeType output = defNodeType(input);
-			}
-			catch (string err)
-			{
-				Assert::AreEqual(err, string("Несуществующий тип"));
-			}
-			Assert::Fail();
+			//nodeType output = defNodeType(input);
+
+			Assert::ExpectException<std::invalid_argument>([]() {
+				defNodeType(string("!"));
+				});
 		}
 	};
 }

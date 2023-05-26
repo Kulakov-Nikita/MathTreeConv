@@ -7,8 +7,8 @@ vector<Node*> forest;
 
 int main(int argc, char* argv[])
 {
-	string input = "/";
-	cout << (defNodeType(input) == Div);
+	string input = "!";
+	cout << defNodeType(input);
 	return 0;
 }
 
@@ -88,17 +88,34 @@ Node* findSubTree(string input)
 
 nodeType defNodeType(string input)
 {
+	// Если введённая строка + - * / ^ , вернуть соответствующий тип
 	if (input == "+")return Plus;
 	if (input == "-")return Minus;
 	if (input == "*")return Mul;
 	if (input == "/")return Div;
 	if (input == "^")return Pow;
 
+	//Если строка начинается с &, вернуть тип корня поддерева с указанным индексом
+	if (input[0] == '&')return findSubTree(input)->getType();
+
+	// Проверить является ли строка, представлением числа
 	bool isDigit = true;
 	for (auto i : input)
 	{
 		isDigit *= isdigit(i);
 	}
-	cout << endl;
+	if (isDigit)return Num;
+
+	// Проверить является ли сторка, названием переменной
+	bool isVarName = true;
+	if (not (isalpha(input[0]) or input[0] == '_'))isVarName = false;
+	for (auto i : input)
+	{
+		isVarName *= isalpha(i) or isdigit(i) or i == '_';
+	}
+	if (isVarName)return Var;
+
+	throw std::invalid_argument("test");
+
 	return Unknown;
 }
