@@ -1,10 +1,16 @@
 ﻿#include "MathTreeConv.h"
+#include <fstream>
+using namespace std;
+
 // Container with subtrees
 vector<Node*> forest;
 
-int main()
+int main(int argc, char* argv[])
 {
-	cout << "Hello world";
+	string link1 = "e://Институт/in.txt";
+	string link2 = "e://Институт/out.txt";
+	vector<string> s = readSequence(link1);
+	writeSequence(link2, s);
 	return 0;
 }
 
@@ -41,6 +47,30 @@ Node* Node::getLeft()const
 Node* Node::getRight()const
 {
 	return right;
+}
+
+vector<string> readSequence(string link)
+{
+	ifstream file(link);
+	string f;
+	vector<string> output;
+	while (!file.eof())
+	{
+		file >> f;
+		output.push_back(f);
+	}
+	file.close();
+	return output;
+}
+
+void writeSequence(string link, vector<string> output)
+{
+	ofstream file(link);
+	for (auto i : output)
+	{
+		file << i << " ";
+	}
+	file.close();
 }
 
 bool isCorrectTriple(vector<string> input)
