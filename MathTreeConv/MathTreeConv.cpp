@@ -23,6 +23,11 @@ Node* Node::turnTripleToNode(vector<string> triple)
 	return new Node(Var);
 }
 
+void Node::updateNode()
+{
+
+}
+
 nodeType Node::getType()const
 {
 	return type;

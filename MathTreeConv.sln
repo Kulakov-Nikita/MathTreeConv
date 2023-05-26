@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test_isCorrectTriple", "Tes
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test_turnTripleToNode", "Test_turnTripleToNode\Test_turnTripleToNode.vcxproj", "{6FF6FDB9-528E-4A55-B37C-F88DD2358DC0}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test_updateNode", "Test_updateNode\Test_updateNode.vcxproj", "{A7DC201F-52AA-4EC4-AEC5-99AEB5316254}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -61,6 +63,14 @@ Global
 		{6FF6FDB9-528E-4A55-B37C-F88DD2358DC0}.Release|x64.Build.0 = Release|x64
 		{6FF6FDB9-528E-4A55-B37C-F88DD2358DC0}.Release|x86.ActiveCfg = Release|Win32
 		{6FF6FDB9-528E-4A55-B37C-F88DD2358DC0}.Release|x86.Build.0 = Release|Win32
+		{A7DC201F-52AA-4EC4-AEC5-99AEB5316254}.Debug|x64.ActiveCfg = Debug|x64
+		{A7DC201F-52AA-4EC4-AEC5-99AEB5316254}.Debug|x64.Build.0 = Debug|x64
+		{A7DC201F-52AA-4EC4-AEC5-99AEB5316254}.Debug|x86.ActiveCfg = Debug|Win32
+		{A7DC201F-52AA-4EC4-AEC5-99AEB5316254}.Debug|x86.Build.0 = Debug|Win32
+		{A7DC201F-52AA-4EC4-AEC5-99AEB5316254}.Release|x64.ActiveCfg = Release|x64
+		{A7DC201F-52AA-4EC4-AEC5-99AEB5316254}.Release|x64.Build.0 = Release|x64
+		{A7DC201F-52AA-4EC4-AEC5-99AEB5316254}.Release|x86.ActiveCfg = Release|Win32
+		{A7DC201F-52AA-4EC4-AEC5-99AEB5316254}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
