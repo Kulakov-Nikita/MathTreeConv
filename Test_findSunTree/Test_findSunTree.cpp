@@ -11,35 +11,24 @@ namespace TestfindSunTree
 	public:
 		TEST_METHOD(EmptyArray)
 		{
-			try
-			{
-				string input = "&0";
-				findSubTree(input);
-			}
-			catch (string err)
-			{
-				Assert::AreEqual(err, string("Массив поддеревьев пуст"));
-			}
-			Assert::Fail();
+			clearForest();
+			Assert::ExpectException<std::invalid_argument>([]() {
+				findSubTree(string("&0"));
+				});
 		}
 		TEST_METHOD(TreeIsNotFound)
 		{
 			Node* node = new Node();
+			clearForest();
 			addSubTree(node);
-			try
-			{
-				string input = "&1";
-				findSubTree(input);
-			}
-			catch (string err)
-			{
-				Assert::AreEqual(err, string("Искомое поддерево не найдено"));
-			}
-			Assert::Fail();
+			Assert::ExpectException<std::invalid_argument>([]() {
+				findSubTree(string("&1"));
+				});
 		}
 		TEST_METHOD(TypicalCase)
 		{
 			Node* node = new Node();
+			clearForest();
 			addSubTree(node);
 			try
 			{

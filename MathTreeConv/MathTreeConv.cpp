@@ -7,6 +7,7 @@ vector<Node*> forest;
 
 int main(int argc, char* argv[])
 {
+	findSubTree("&1");
 	//Node* node1 = new Node();
 	//Node* node2 = new Node();
 	//cout << addSubTree(node1) << endl;
@@ -87,7 +88,14 @@ string addSubTree(Node* input)
 
 Node* findSubTree(string input)
 {
-	return new Node();
+	string index;
+	for (auto i : input)
+	{
+		if (isdigit(i))index.push_back(i);
+	}
+	if(forest.size() == 0)throw invalid_argument("Массив поддеревьев пуст");
+	if(forest.size() <= atoi(index.c_str()))throw invalid_argument("Искомое поддерево не найдено");
+	return forest[atoi(index.c_str())];
 }
 
 void clearForest()
@@ -124,7 +132,7 @@ nodeType defNodeType(string input)
 	}
 	if (isVarName)return Var;
 
-	throw std::invalid_argument("test");
+	throw invalid_argument("test");
 
 	return Unknown;
 }
