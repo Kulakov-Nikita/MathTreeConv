@@ -52,3 +52,8 @@ string addSubTree(Node* input)
 {
 	return "&";
 }
+
+Node* findSubTree(string input)
+{
+	return new Node();
+}
