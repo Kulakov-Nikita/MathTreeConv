@@ -32,3 +32,8 @@ Node* Node::getRight()const
 {
 	return right;
 }
+
+bool isCorrectTriple(vector<string> input)
+{
+	return false;
+}
