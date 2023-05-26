@@ -57,3 +57,8 @@ Node* findSubTree(string input)
 {
 	return new Node();
 }
+
+nodeType defNodeType(string input)
+{
+	return Unknown;
+}
