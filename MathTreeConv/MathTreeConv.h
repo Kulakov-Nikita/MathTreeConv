@@ -1,11 +1,19 @@
+#include<iostream>
+#include<string.h>
+#include<vector>
+using namespace std;
 enum nodeType{Unknown,Var,Num,Plus,Minus,Mul,Div,Pow};
 
-class Node 
+class Node
 {
+private:
 	nodeType type; // “ип узла
 	float value; // «начение числа (если тип узла - число)
 	string name; // »м€ переменной (если тип узла - переменна€)
-	Node *left, *right; // —сылки на потомков узла
+	Node* left, * right; // —сылки на потомков узла
+public:
+	Node() :type(Unknown), left(NULL), right(NULL) {}
+	Node(nodeType Type) :type(Type), left(NULL), right(NULL) {}
 
 	/*
 	* \Convert the tree to a sequence of substrings
@@ -19,7 +27,7 @@ class Node
 	* return - recieved tree
 	* throw - if number of substrings is incorrect
 	*/
-	Node* turnStringVectorToTree(vector<string> input);
+	static Node* turnStringVectorToTree(vector<string> input);
 
 	/*
 	* \Convert the sequence of three substrings to a node
@@ -27,18 +35,21 @@ class Node
 	* \return - recieved subtree
 	* \throw - if creating this subtree is imposible
 	*/
-	Node* turnTripleToNode(vector<string> triple);
+	static Node* turnTripleToNode(vector<string> triple);
 
 	/*
 	* \Change node according to arithmetic precedence
 	* \param[in] input - the subtree which could be changed
 	* \return - recieved subtree
 	*/
-	Node* updateNode(Node* input);
-};
+	void updateNode();
 
-// Container with subtrees
-vector<Node*> forest;
+	nodeType getType()const;
+
+	Node* getLeft()const;
+
+	Node* getRight()const;
+};
 
 /*
 * \Read a sequence from the file

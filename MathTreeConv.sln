@@ -5,6 +5,8 @@ VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MathTreeConv", "MathTreeConv\MathTreeConv.vcxproj", "{08EF5CDD-7B53-4097-9981-7823979362A3}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test_turnStringVectorToTree", "Test_turnStringVectorToTree\Test_turnStringVectorToTree.vcxproj", "{20F42DF3-45AA-488A-9FFB-18AD86F8D514}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{08EF5CDD-7B53-4097-9981-7823979362A3}.Release|x64.Build.0 = Release|x64
 		{08EF5CDD-7B53-4097-9981-7823979362A3}.Release|x86.ActiveCfg = Release|Win32
 		{08EF5CDD-7B53-4097-9981-7823979362A3}.Release|x86.Build.0 = Release|Win32
+		{20F42DF3-45AA-488A-9FFB-18AD86F8D514}.Debug|x64.ActiveCfg = Debug|x64
+		{20F42DF3-45AA-488A-9FFB-18AD86F8D514}.Debug|x64.Build.0 = Debug|x64
+		{20F42DF3-45AA-488A-9FFB-18AD86F8D514}.Debug|x86.ActiveCfg = Debug|Win32
+		{20F42DF3-45AA-488A-9FFB-18AD86F8D514}.Debug|x86.Build.0 = Debug|Win32
+		{20F42DF3-45AA-488A-9FFB-18AD86F8D514}.Release|x64.ActiveCfg = Release|x64
+		{20F42DF3-45AA-488A-9FFB-18AD86F8D514}.Release|x64.Build.0 = Release|x64
+		{20F42DF3-45AA-488A-9FFB-18AD86F8D514}.Release|x86.ActiveCfg = Release|Win32
+		{20F42DF3-45AA-488A-9FFB-18AD86F8D514}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
