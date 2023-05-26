@@ -7,8 +7,10 @@ vector<Node*> forest;
 
 int main(int argc, char* argv[])
 {
-	string input = "!";
-	cout << defNodeType(input);
+	//Node* node1 = new Node();
+	//Node* node2 = new Node();
+	//cout << addSubTree(node1) << endl;
+	//cout << addSubTree(node2) << endl;
 	return 0;
 }
 
@@ -78,12 +80,19 @@ bool isCorrectTriple(vector<string> input)
 
 string addSubTree(Node* input)
 {
-	return "&";
+	forest.push_back(input);
+	char* c;
+	return "&" + to_string(forest.size() - 1);
 }
 
 Node* findSubTree(string input)
 {
 	return new Node();
+}
+
+void clearForest()
+{
+	forest.clear();
 }
 
 nodeType defNodeType(string input)

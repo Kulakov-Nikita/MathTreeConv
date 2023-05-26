@@ -1,4 +1,5 @@
 ﻿#include<iostream>
+#include<string>
 #include<string.h>
 #include<vector>
 using namespace std;
@@ -97,3 +98,5 @@ Node* findSubTree(string input);
 * \throw - if the input is incorrect
 */
 nodeType defNodeType(string input);
+
+void clearForest();

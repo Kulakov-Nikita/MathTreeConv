@@ -17,6 +17,7 @@ namespace TestaddSubTree
 		}
 		TEST_METHOD(SingleTreeInArray)
 		{
+			clearForest();
 			Node* node1 = new Node();
 			Node* node2 = new Node();
 			addSubTree(node1);
@@ -25,6 +26,7 @@ namespace TestaddSubTree
 		}
 		TEST_METHOD(ManyTreesInArray)
 		{
+			clearForest();
 			Node* node1 = new Node();
 			Node* node2 = new Node();
 			Node* node3 = new Node();
