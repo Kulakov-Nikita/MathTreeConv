@@ -13,6 +13,11 @@ Node* Node::turnStringVectorToTree(vector<string> input)
 	return new Node(Var);
 }
 
+vector<string> Node::turnTreeToStringVector()
+{
+	return vector<string>();
+}
+
 nodeType Node::getType()const
 {
 	return type;
