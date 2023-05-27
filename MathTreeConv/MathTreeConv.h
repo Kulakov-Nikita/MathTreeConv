@@ -10,7 +10,7 @@ class Node
 private:
 	nodeType type; // Тип узла
 	float value; // Значение числа (если тип узла - число)
-	string name; // Имя переменной (если тип узла - переменная)
+	string name; // Имя переменной (если тип узла - переменная), Строковое представление числа (если тип узла - число)
 	Node* left, * right; // Ссылки на потомков узла
 public:
 	Node() :type(Unknown), left(NULL), right(NULL) {}

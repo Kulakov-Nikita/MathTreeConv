@@ -30,7 +30,7 @@ vector<string> Node::turnTreeToStringVector()
 		output.push_back(name);
 		break;
 	case Num:
-		output.push_back(to_string(value));
+		output.push_back(name);
 		break;
 	case Plus:
 		output.push_back("+");
@@ -89,7 +89,8 @@ Node* Node::turnTripleToNode(vector<string> triple)
 		break;
 	case Num:
 		root->left = new Node(Num);
-		root->left->value = atoi(triple[1].c_str());
+		root->right->value = atof(triple[1].c_str());
+		root->left->name = triple[1];
 		break;
 	case Var:
 		root->left = new Node(Var);
@@ -105,7 +106,8 @@ Node* Node::turnTripleToNode(vector<string> triple)
 		break;
 	case Num:
 		root->right = new Node(Num);
-		root->right->value = atoi(triple[2].c_str());
+		root->right->value = atof(triple[2].c_str());
+		root->right->name = triple[2];
 		break;
 	case Var:
 		root->right = new Node(Var);
