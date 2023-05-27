@@ -7,29 +7,67 @@ vector<Node*> forest;
 
 int main(int argc, char* argv[])
 {
-	vector<string> input{ "+","1","&0" };
-	clearForest();
-	addSubTree(new Node());
-	Node* node = Node::turnTripleToNode(input);
-	vector<string> output = node->turnTreeToStringVector();
-	for (auto o : output)
+	vector<string> input{ "*","+","1","2","/","3","^","4","5" };
+	Node* node = Node::turnStringVectorToTree(input);
+	vector<string> a = node->turnTreeToStringVector();
+	for (auto o : a)
 	{
 		cout << o << " ";
 	}
-	/*
-	Node* node = Node::turnTripleToNode({ "+","1","2" });
-	vector<string> output = node->turnTreeToStringVector();
-	for (auto o : output)
-	{
-		cout << o << " ";
-	}
-	*/
 	return 0;
 }
 
 Node* Node::turnStringVectorToTree(vector<string> input)
 {
-	return new Node(Var);
+	Node* output = new Node();
+
+	if (input.size() == 0)return output;
+	if (input.size() == 1 and input[0] == "")return output;
+
+	vector<string> stack;
+	int counter = 0;
+
+	stack.push_back(input[counter++]);
+	stack.push_back(input[counter++]);
+	stack.push_back(input[counter++]);
+
+	while (stack.size() > 1)
+	{
+		if (stack.size() > 2)
+		{
+			vector<string> triple{ stack[stack.size() - 3], stack[stack.size() - 2],stack[stack.size() - 1] }; // Три верхние элемента стэка
+			if (isCorrectTriple(triple))
+			{
+				output = turnTripleToNode(triple); 
+
+				// Удаляем соответсвующий кортеж (три элемента) с вершины стэка
+				stack.pop_back();
+				stack.pop_back();
+				stack.pop_back();
+
+				stack.push_back(addSubTree(output));
+			}
+			else
+			{
+				stack.push_back(input[counter++]);
+			}
+
+		}
+		else
+		{
+			stack.push_back(input[counter++]);
+		}
+	}
+	if (stack.size() == 1)
+	{
+		return output;
+	}
+	else
+	{
+		throw invalid_argument("Файл содержит оператор с недостаточным количеством аргументов.");
+	}
+
+	return new Node();
 }
 
 vector<string> Node::turnTreeToStringVector()
