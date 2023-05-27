@@ -76,6 +76,16 @@ void writeSequence(string link, vector<string> output)
 
 bool isCorrectTriple(vector<string> input)
 {
+	if (defNodeType(input[0]) == Plus or defNodeType(input[0]) == Minus or defNodeType(input[0]) == Mul or defNodeType(input[0]) == Div or defNodeType(input[0]) == Pow)
+	{
+		if (defNodeType(input[1]) == Var or defNodeType(input[1]) == Num or defNodeType(input[1]) or defNodeType(input[1]) == SubTree)
+		{
+			if (defNodeType(input[2]) == Var or defNodeType(input[2]) == Num)
+			{
+				return true;
+			}
+		}
+	}
 	return false;
 }
 
@@ -113,7 +123,7 @@ nodeType defNodeType(string input)
 	if (input == "^")return Pow;
 
 	//Если строка начинается с &, вернуть тип корня поддерева с указанным индексом
-	if (input[0] == '&')return findSubTree(input)->getType();
+	if (input[0] == '&')return SubTree;
 
 	// Проверить является ли строка, представлением числа
 	bool isDigit = true;

@@ -101,7 +101,7 @@ namespace TestdefNodeType
 				Node* node = new Node(Plus);
 				addSubTree(node);
 				nodeType output = defNodeType(input);
-				Assert::IsTrue(output == Plus);
+				Assert::IsTrue(output == SubTree);
 			}
 			catch (string err)
 			{
