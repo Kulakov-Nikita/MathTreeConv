@@ -7,7 +7,10 @@ vector<Node*> forest;
 
 int main(int argc, char* argv[])
 {
-	isCorrectTriple({ "+", "+","1" });
+	Node* node = Node::turnTripleToNode({ "+","1","2" });
+	cout << node->getType();
+	cout << node->getLeft()->getType();
+	cout << node->getRight()->getType();
 	return 0;
 }
 
@@ -23,7 +26,50 @@ vector<string> Node::turnTreeToStringVector()
 
 Node* Node::turnTripleToNode(vector<string> triple)
 {
-	return new Node(Var);
+	// Вызов исключений
+	if(triple.size() < 3)throw invalid_argument("Для создания поддерева не хватает входных значений.");
+	if(triple.size() > 3)throw invalid_argument("Слишком много значений для создания поддерева.");
+	if(defNodeType(triple[0])<Plus or defNodeType(triple[0]) == SubTree)throw invalid_argument("Создание поддерева невозможно, так как отсутствует оператор.");
+	if( (defNodeType(triple[1]) != Num and defNodeType(triple[1]) != Var and defNodeType(triple[1]) != SubTree) or 
+		(defNodeType(triple[2]) != Num and defNodeType(triple[2]) != Var and defNodeType(triple[2]) != SubTree) )
+		throw invalid_argument("Создание поддерева невозможно, так как отсутствуют аргументы.");
+
+	// Создаём корень
+	Node* root = new Node(defNodeType(triple[0]));
+
+	// добавляем левого потомка
+	switch (defNodeType(triple[1]))
+	{
+	case SubTree:
+		root->left = findSubTree(triple[1]);
+		break;
+	case Num:
+		root->left = new Node(Num);
+		root->left->value = atoi(triple[1].c_str());
+		break;
+	case Var:
+		root->left = new Node(Var);
+		root->left->name = triple[1];
+	default:break;
+	}
+
+	// Добавляем правого потомка
+	switch (defNodeType(triple[2]))
+	{
+	case SubTree:
+		root->right = findSubTree(triple[2]);
+		break;
+	case Num:
+		root->right = new Node(Num);
+		root->right->value = atoi(triple[2].c_str());
+		break;
+	case Var:
+		root->right = new Node(Var);
+		root->right->name = triple[2];
+	default:break;
+	}
+
+	return root;
 }
 
 void Node::updateNode()
