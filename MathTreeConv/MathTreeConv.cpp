@@ -7,12 +7,23 @@ vector<Node*> forest;
 
 int main(int argc, char* argv[])
 {
+	vector<string> input{ "+","1","&0" };
+	clearForest();
+	addSubTree(new Node());
+	Node* node = Node::turnTripleToNode(input);
+	vector<string> output = node->turnTreeToStringVector();
+	for (auto o : output)
+	{
+		cout << o << " ";
+	}
+	/*
 	Node* node = Node::turnTripleToNode({ "+","1","2" });
 	vector<string> output = node->turnTreeToStringVector();
 	for (auto o : output)
 	{
 		cout << o << " ";
 	}
+	*/
 	return 0;
 }
 
@@ -80,7 +91,6 @@ Node* Node::turnTripleToNode(vector<string> triple)
 
 	// Создаём корень
 	Node* root = new Node(defNodeType(triple[0]));
-
 	// добавляем левого потомка
 	switch (defNodeType(triple[1]))
 	{
@@ -89,7 +99,7 @@ Node* Node::turnTripleToNode(vector<string> triple)
 		break;
 	case Num:
 		root->left = new Node(Num);
-		root->right->value = atof(triple[1].c_str());
+		root->left->value = atof(triple[1].c_str());
 		root->left->name = triple[1];
 		break;
 	case Var:
@@ -97,7 +107,6 @@ Node* Node::turnTripleToNode(vector<string> triple)
 		root->left->name = triple[1];
 	default:break;
 	}
-
 	// Добавляем правого потомка
 	switch (defNodeType(triple[2]))
 	{
