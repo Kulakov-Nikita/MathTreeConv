@@ -7,11 +7,7 @@ vector<Node*> forest;
 
 int main(int argc, char* argv[])
 {
-	findSubTree("&1");
-	//Node* node1 = new Node();
-	//Node* node2 = new Node();
-	//cout << addSubTree(node1) << endl;
-	//cout << addSubTree(node2) << endl;
+	isCorrectTriple({ "+", "+","1" });
 	return 0;
 }
 
@@ -78,9 +74,9 @@ bool isCorrectTriple(vector<string> input)
 {
 	if (defNodeType(input[0]) == Plus or defNodeType(input[0]) == Minus or defNodeType(input[0]) == Mul or defNodeType(input[0]) == Div or defNodeType(input[0]) == Pow)
 	{
-		if (defNodeType(input[1]) == Var or defNodeType(input[1]) == Num or defNodeType(input[1]) or defNodeType(input[1]) == SubTree)
+		if (defNodeType(input[1]) == Var or defNodeType(input[1]) == Num or defNodeType(input[1]) == SubTree)
 		{
-			if (defNodeType(input[2]) == Var or defNodeType(input[2]) == Num)
+			if (defNodeType(input[2]) == Var or defNodeType(input[2]) == Num or defNodeType(input[2]) == SubTree)
 			{
 				return true;
 			}
