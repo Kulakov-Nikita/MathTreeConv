@@ -8,9 +8,11 @@ vector<Node*> forest;
 int main(int argc, char* argv[])
 {
 	Node* node = Node::turnTripleToNode({ "+","1","2" });
-	cout << node->getType();
-	cout << node->getLeft()->getType();
-	cout << node->getRight()->getType();
+	vector<string> output = node->turnTreeToStringVector();
+	for (auto o : output)
+	{
+		cout << o << " ";
+	}
 	return 0;
 }
 
@@ -21,7 +23,49 @@ Node* Node::turnStringVectorToTree(vector<string> input)
 
 vector<string> Node::turnTreeToStringVector()
 {
-	return vector<string>();
+	vector<string> output;
+	switch (type)
+	{
+	case Var:
+		output.push_back(name);
+		break;
+	case Num:
+		output.push_back(to_string(value));
+		break;
+	case Plus:
+		output.push_back("+");
+		break;
+	case Minus:
+		output.push_back("-");
+		break;
+	case Mul:
+		output.push_back("*");
+		break;
+	case Div:
+		output.push_back("/");
+		break;
+	case Pow:
+		output.push_back("^");
+		break;
+	default:break;
+	}
+	if (left)
+	{
+		vector<string> add = left->turnTreeToStringVector();
+		for (auto a : add)
+		{
+			output.push_back(a);
+		}
+	}
+	if (right)
+	{
+		vector<string> add = right->turnTreeToStringVector();
+		for (auto a : add)
+		{
+			output.push_back(a);
+		}
+	}
+	return output;
 }
 
 Node* Node::turnTripleToNode(vector<string> triple)
@@ -171,7 +215,7 @@ nodeType defNodeType(string input)
 	bool isDigit = true;
 	for (auto i : input)
 	{
-		isDigit *= isdigit(i);
+		isDigit *= (isdigit(i) or i == '.');
 	}
 	if (isDigit)return Num;
 
