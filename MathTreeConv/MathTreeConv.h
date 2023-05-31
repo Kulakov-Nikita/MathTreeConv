@@ -15,6 +15,8 @@ private:
 public:
 	Node() :type(Unknown), left(NULL), right(NULL) {}
 	Node(nodeType Type) :type(Type), left(NULL), right(NULL) {}
+	Node(float f, string s) :type(Num), value(f), name(s) {}
+	Node(Node* n);
 
 	/*
 	* \Convert the tree to a sequence of substrings
@@ -43,7 +45,7 @@ public:
 	* \param[in] input - the subtree which could be changed
 	* \return - recieved subtree
 	*/
-	void updateNode();
+	bool updateNode();
 
 	nodeType getType()const;
 

@@ -7,14 +7,53 @@ vector<Node*> forest;
 
 int main(int argc, char* argv[])
 {
-	vector<string> input{ "*","+","1","2","/","3","^","4","5" };
-	Node* node = Node::turnStringVectorToTree(input);
-	vector<string> a = node->turnTreeToStringVector();
-	for (auto o : a)
-	{
-		cout << o << " ";
+	setlocale(LC_ALL, "Russian");
+	try {
+		if (argc < 2) {
+			throw invalid_argument("Адресс файла с входными данными не указан.");
+		}
+		else if (argc < 3)
+		{
+			throw invalid_argument("Адресс для записи входных данных не указан.");
+		}
+		else {
+			vector<string> input = readSequence(argv[1]);
+			if (input.size() == 0 or (input.size()==1 and input[0]=="")) {
+				throw invalid_argument("Входной файл пуст");
+			}
+			else
+			{
+				Node* tree = Node::turnStringVectorToTree(input);;
+				tree->updateNode();
+				vector<string> output = tree->turnTreeToStringVector();
+				writeSequence(argv[2], output);
+			}
+		}
 	}
-	return 0;
+	catch (invalid_argument err)
+	{
+		int a;
+		cout << err.what() << endl;
+		cin >> a;
+	}
+}
+
+Node::Node(Node* n)
+{
+	type = n->type;
+	if (type == Num)
+	{
+		value = n->value;
+		name = n->name;
+	}
+	if (type == Var)
+	{
+		name = n->name;
+	}
+	if (n->left)left = new Node(n->left);
+	else left = NULL;
+	if (n->right)right = new Node(n->right);
+	else right = NULL;
 }
 
 Node* Node::turnStringVectorToTree(vector<string> input)
@@ -23,6 +62,7 @@ Node* Node::turnStringVectorToTree(vector<string> input)
 
 	if (input.size() == 0)return output;
 	if (input.size() == 1 and input[0] == "")return output;
+	if (input.size() < 3)throw invalid_argument("Файл содержит оператор с исбыточным количеством аргументов. Возможно в конца файла есть лишний символ или пробел");
 
 	vector<string> stack;
 	int counter = 0;
@@ -60,6 +100,10 @@ Node* Node::turnStringVectorToTree(vector<string> input)
 	}
 	if (stack.size() == 1)
 	{
+		if (counter != input.size())
+		{
+			throw invalid_argument("Файл содержит оператор с исбыточным количеством аргументов. Возможно в конца файла есть лишний символ или пробел");
+		}
 		return output;
 	}
 	else
@@ -67,7 +111,6 @@ Node* Node::turnStringVectorToTree(vector<string> input)
 		throw invalid_argument("Файл содержит оператор с недостаточным количеством аргументов.");
 	}
 
-	return new Node();
 }
 
 vector<string> Node::turnTreeToStringVector()
@@ -95,6 +138,9 @@ vector<string> Node::turnTreeToStringVector()
 		break;
 	case Pow:
 		output.push_back("^");
+		break;
+	case Unknown:
+		output.push_back("");
 		break;
 	default:break;
 	}
@@ -165,9 +211,142 @@ Node* Node::turnTripleToNode(vector<string> triple)
 	return root;
 }
 
-void Node::updateNode()
+bool Node::updateNode()
 {
+	// Тип 1
+	if (type == Mul and
+		(left->type == Var or left->type == Num or left->type == Mul) and
+		(right->type == Plus or right->type == Minus))
+	{
+		// Поменять левого и правого потомка местами
+		Node* temp = left;
+		left = right;
+		right = temp;
 
+		left->updateNode();
+		right->updateNode();
+		updateNode();
+		return true;
+
+	}
+
+	// Тип 2
+	if ((type == Mul and (left->type == Plus or left->type == Minus)) or
+		(type == Div and (left->type == Plus or left->type == Minus) and (not (right->type == Plus or right->type == Minus))))
+	{
+		Node* first = new Node(type);
+		first->left = new Node(left->left);
+		first->right = new Node(right);
+
+		Node* second = new Node(type);
+		second->left = new Node(left->right);
+		second->right = new Node(right);
+
+		type = left->type;
+		left = first;
+		right = second;
+
+		left->updateNode();
+		right->updateNode();
+		updateNode();
+		return true;
+
+	}
+
+	// Тип 3
+	if (type == Pow and
+		(left->type == Mul or left->type == Div) and
+		(right->type == Num or right->type == Var))
+	{
+		Node* first = new Node(type);
+		first->left = new Node(left->left);
+		first->right = new Node(right);
+
+		Node* second = new Node(type);
+		second->left = new Node(left->right);
+		second->right = new Node(right);
+
+		type = left->type;
+		left = first;
+		right = second;
+
+		left->updateNode();
+		right->updateNode();
+		updateNode();
+		return true;
+	}
+
+	// Тип 4
+	if (type == Pow and
+		(left->type == Plus or left->type == Minus) and
+		right->type == Num)
+	{
+		if(right->value == 1)
+		{
+			Node* temp = left;
+			type = temp->type;
+			left = temp->left;
+			right = temp->right;
+
+			left->updateNode();
+			right->updateNode();
+			updateNode();
+		}
+		else {
+			if (right->value - int(right->value) == 0)
+			{
+				if (int(right->value) % 2 == 0)
+				{
+					Node* first = new Node(Pow);
+					first->left = new Node(left);
+					first->right = new Node(right->value / 2, to_string(int(right->value / 2)));
+
+					Node* second = new Node(Pow);
+					second->left = new Node(left);
+					second->right = new Node(right->value / 2, to_string(int(right->value / 2)));
+
+					type = Mul;
+					left = first;
+					right = second;
+
+					left->updateNode();
+					right->updateNode();
+					updateNode();
+					return true;
+				}
+				else
+				{
+					Node* first = new Node(Pow);
+					first->left = new Node(left);
+					first->right = new Node(right->value - 1, to_string(int(right->value - 1)));
+
+					Node* second = new Node(left);
+
+					type = Mul;
+					left = first;
+					right = second;
+
+					left->updateNode();
+					right->updateNode();
+					updateNode();
+					return true;
+				}
+			}
+		}
+	}
+
+	// Запустить функцию рекурсивно для потомков
+	if (left)
+	{
+		if (left->updateNode())
+			updateNode();
+	}
+	if (right) 
+	{
+		if(right->updateNode())
+			updateNode();
+	}
+	return false;
 }
 
 nodeType Node::getType()const
@@ -188,6 +367,7 @@ Node* Node::getRight()const
 vector<string> readSequence(string link)
 {
 	ifstream file(link);
+	if (not file.is_open())throw invalid_argument("Неверно указан файл с входными данными. Возможно, указанный файл не существует.");
 	string f;
 	vector<string> output;
 	while (!file.eof())
@@ -202,6 +382,7 @@ vector<string> readSequence(string link)
 void writeSequence(string link, vector<string> output)
 {
 	ofstream file(link);
+	if (not file.is_open())throw invalid_argument("Неверно указан файл для выходных данных. Возможно, указанного расположения не существует или нет прав на запись.");
 	for (auto i : output)
 	{
 		file << i << " ";
