@@ -243,7 +243,7 @@ Node* Node::turnTripleToNode(vector<string> triple)
 		break;
 	case Num:
 		root->right = new Node(Num);
-		// Заменяем запятую в числе на точку, так как функция atof в качестве разделителя дробной части принимает запятую
+		// Заменяем точку в числе на запятую, так как функция atof в качестве разделителя дробной части принимает запятую
 		for (int i = 0; i < triple[2].size(); i++)if (triple[2][i] == '.')triple[2][i] = ',';
 		root->right->value = atof(triple[2].c_str());
 		root->right->name = triple[2];
@@ -259,16 +259,21 @@ Node* Node::turnTripleToNode(vector<string> triple)
 
 bool Node::updateNode()
 {
-	// Тип 1
+	// Обновляем узлы в соответствии с соответствующими шаблонами
+	
+	// Шаблон 1: Произведение (числа/перменной/произведения) и (суммы/разности)
 	if (type == Mul and
 		(left->type == Var or left->type == Num or left->type == Mul) and
 		(right->type == Plus or right->type == Minus))
 	{
+		// Пример: 5 * (1 + 2) -> (1 + 2) * 5
+
 		// Поменять левого и правого потомка местами
 		Node* temp = left;
 		left = right;
 		right = temp;
 
+		// Рекурсивно обновляем потомков данного узла
 		left->updateNode();
 		right->updateNode();
 		updateNode();
@@ -276,14 +281,18 @@ bool Node::updateNode()
 
 	}
 
-	// Тип 2
+	// Шаблон 2: Произведение (суммы/разности) с чем-то ИЛИ Частное (суммы/разности) и чего-то кроме(суммы/разности)
 	if ((type == Mul and (left->type == Plus or left->type == Minus)) or
 		(type == Div and (left->type == Plus or left->type == Minus) and (not (right->type == Plus or right->type == Minus))))
 	{
+		// Пример: (1 + 2) / 3 -> 1/3 + 2/3
+
+		// Первый(будующий левый) потомок
 		Node* first = new Node(type);
 		first->left = new Node(left->left);
 		first->right = new Node(right);
 
+		// Второй(будующий правый) потомок
 		Node* second = new Node(type);
 		second->left = new Node(left->right);
 		second->right = new Node(right);
@@ -292,6 +301,7 @@ bool Node::updateNode()
 		left = first;
 		right = second;
 
+		// Рекурсивно обновляем потомков данного узла
 		left->updateNode();
 		right->updateNode();
 		updateNode();
@@ -299,15 +309,19 @@ bool Node::updateNode()
 
 	}
 
-	// Тип 3
+	// Шаблон 3: Возведение (произведение/частного) в степень в виде (числа/переменной)
 	if (type == Pow and
 		(left->type == Mul or left->type == Div) and
 		(right->type == Num or right->type == Var))
 	{
+		// Пример: (5 / 2) ^ 3 -> 5 ^ 3 / 2 ^ 3
+
+		// Первый(будущий левый) потомок
 		Node* first = new Node(type);
 		first->left = new Node(left->left);
 		first->right = new Node(right);
 
+		// Второй(будущий правый) потомок
 		Node* second = new Node(type);
 		second->left = new Node(left->right);
 		second->right = new Node(right);
@@ -316,17 +330,19 @@ bool Node::updateNode()
 		left = first;
 		right = second;
 
+		// Рекурсивно обновляем потомков данного узла
 		left->updateNode();
 		right->updateNode();
 		updateNode();
 		return true;
 	}
 
-	// Тип 4
+	// Шаблон 4: Возведение (суммы/разности) в степень в виде числа
 	if (type == Pow and
 		(left->type == Plus or left->type == Minus) and
 		right->type == Num)
 	{
+		// Если степень равна 1
 		if(right->value == 1)
 		{
 			Node* temp = left;
@@ -334,19 +350,26 @@ bool Node::updateNode()
 			left = temp->left;
 			right = temp->right;
 
+			// Рекурсивно обновляем потомков данного узла
 			left->updateNode();
 			right->updateNode();
 			updateNode();
 		}
 		else {
+			// Если стпень - целое число
 			if (float(right->value) - int(right->value) == 0.f)
 			{
+				// Если степень - чётное число
 				if (int(right->value) % 2 == 0)
 				{
+					// Пример: (1 + 2) ^ 4 = (1 + 2) ^ 2 * (1 + 2) ^ 2
+
+					// Первый(будущий левый) потомок
 					Node* first = new Node(Pow);
 					first->left = new Node(left);
 					first->right = new Node(right->value / 2, to_string(int(right->value / 2)));
 
+					// Второй(будущий правый) потомок
 					Node* second = new Node(Pow);
 					second->left = new Node(left);
 					second->right = new Node(right->value / 2, to_string(int(right->value / 2)));
@@ -355,6 +378,7 @@ bool Node::updateNode()
 					left = first;
 					right = second;
 
+					// Рекурсивно обновляем потомков данного узла
 					left->updateNode();
 					right->updateNode();
 					updateNode();
@@ -362,16 +386,23 @@ bool Node::updateNode()
 				}
 				else
 				{
+					// Если степень не чётное число
+					
+					// Пример: (1 + 2) ^ 3 -> (1 + 2) ^ 2 * (1 + 2)
+
+					// Первый(будущий левый) потомок
 					Node* first = new Node(Pow);
 					first->left = new Node(left);
 					first->right = new Node(right->value - 1, to_string(int(right->value - 1)));
 
+					// Второй(будущий правый) потомок
 					Node* second = new Node(left);
 
 					type = Mul;
 					left = first;
 					right = second;
 
+					// Рекурсивно обновляем потомков данного узла
 					left->updateNode();
 					right->updateNode();
 					updateNode();

@@ -13,90 +13,123 @@ private:
 	string name; // Имя переменной (если тип узла - переменная), Строковое представление числа (если тип узла - число)
 	Node* left, * right; // Ссылки на потомков узла
 public:
+	/*!
+	* \Конструктор узла дерева по умолчанию
+	*/
 	Node() :type(Unknown), left(NULL), right(NULL) {}
+
+	/*!
+	* \Конструктор узла дерева соответствующего введёному типу
+	* \param[in] Type - тип создаваемого узла
+	*/
 	Node(nodeType Type) :type(Type), left(NULL), right(NULL) {}
+
+	/*!
+	* \Конструктор узла дерева типа "Число"
+	* \param[in] f - значение числа
+	* \param[in] s - строковое представление чимла
+	*/
 	Node(float f, string s) :type(Num), value(f), name(s) {}
+
+	/*!
+	* \Конструктор копирования узла
+	* \param[in] n - указатель на оригинальный узел
+	*/
 	Node(Node* n);
 
-	/*
-	* \Convert the tree to a sequence of substrings
-	* return - sequence of substrings
+	/*!
+	* \ Преобразует дерево развбора математического выражения в запись в виде обратной польской нотации
+	* \ return - последовательность подстрок представляющая запись математического выражения
 	*/
 	vector<string> turnTreeToStringVector();
 
-	/*
-	* \Convert the sequence of substrings to a tree
-	* \param[in] - convertable sequence of substrings
-	* return - recieved tree
-	* throw - if number of substrings is incorrect
+	/*!
+	* \Преобразует запись в виде обратной польской в дерево разбора математического выражения
+	* \param[in] - входная последовательность подстрок
+	* \return - полученное дерево
+	* \throw - ошибка, связанная с некоректными входными данными
 	*/
 	static Node* turnStringVectorToTree(vector<string> input);
 
-	/*
-	* \Convert the sequence of three substrings to a node
-	* \param[in] triple - convertable sequence of three substring
-	* \return - recieved subtree
-	* \throw - if creating this subtree is imposible
+	/*!
+	* \Преобразует кортеж из подстрок вида (оператор, аргумент, аругмент) в поддерево
+	* \param[in] triple - входной кортеж
+	* \return - полученное поддерево
+	* \throw - ошибка возникшая при создании поддерева
 	*/
 	static Node* turnTripleToNode(vector<string> triple);
 
-	/*
-	* \Change node according to arithmetic precedence
-	* \param[in] input - the subtree which could be changed
-	* \return - recieved subtree
+	/*!
+	* \Обновление узла в соответствии с определённым шаблоном
+	* \return - флаг обновления узла (да - узел обновлён, нет - узел не обновлён)
 	*/
 	bool updateNode();
-
+	
+	/*!
+	* \Возвращает тип узла
+	* \return - тип узла
+	*/
 	nodeType getType()const;
 
+	/*!
+	* \Возвращает указатель на левого потомка
+	* \return - указатель на левого потомка
+	*/
 	Node* getLeft()const;
 
+	/*!
+	* \Возвращает указатель на правого потомка
+	* \return - указатель на правого потомка
+	*/
 	Node* getRight()const;
 };
 
-/*
-* \Read a sequence from the file
-* \param[in] link - adress of readable file
-* \return - sequence of substrings
-* \throw - throws exceptions in case of read errors
+/*!
+* \Считывает запись математического выражения (в виде последовательности подстрок) из файла
+* \param[in] link - адрес считываемого файла
+* \return - полученная последовательность подстрок
+* \throw - ошибка при считывании файла
 */
 vector<string> readSequence(string link);
 
-/*
-* \Write the sequence in the file
-* \param[in] link - adress of recordable file
-* \param[in] output - sequence of substring
-* \throw - throws exceptions in case of write errors
+/*!
+* \Записывает математическое выражение (в виде последовательности подстрок) в файл
+* \param[in] link - адрес файла для записи
+* \param[in] output - записываемая последовательность подстрок
+* \throw - ошибка при записи в файл
 */
 void writeSequence(string link, vector<string> output);
 
-/*
-* \Check if the sequence of three substring correct
-* \param[in] input - test sequence
-* \return - is the sequence correct
+/*!
+* \Проверяем соотвтествие введёного кортежа виду (оператор, аргумент, аргумент)
+* \param[in] input - тестируемый кортеж
+* \return - соответствует ли кортеж виду (оператор, аргумент, аргумент)
 */
 bool isCorrectTriple(vector<string> input);
 
-/*
-* \Add the subtree to the forest
-* \param[in] input - addable subtree
-* \return - id of added subtree
+/*!
+* \Добавляет поддерево в массив поддеревьев
+* \param[in] input - добавляемое поддерево
+* \return - индекс добавленного дерева в массиве
 */
 string addSubTree(Node* input);
 
-/*
-* Find the subtree in the forest
-* param[in] - id of subtree
-* return - subtree (or 0 if subtree is not found)
+/*!
+* \Ищет поддерево в массиве
+* \param[in] - индекс поддерева в массиве
+* \return - указатель на корень найденного поддерева (0 - если поддерево не найдено)
 */
 Node* findSubTree(string input);
 
-/*
-* \Determine the type of the received element
-* \param[in] input - test substring
-* \return - type of the node
-* \throw - if the input is incorrect
+/*!
+* \Определяем тип узла соответствующий введённой подстроке
+* \param[in] input - определяемая подстрока
+* \return - тип узла
+* \throw - ошибка, если входные данные не корректны
 */
 nodeType defNodeType(string input);
 
+/*!
+* \Очищает список поддеревьев
+*/
 void clearForest();
