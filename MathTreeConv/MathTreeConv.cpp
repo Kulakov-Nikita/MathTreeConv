@@ -2,13 +2,14 @@
 #include <fstream>
 using namespace std;
 
-// Container with subtrees
+// Контейнер с поддеревьями
 vector<Node*> forest;
 
 int main(int argc, char* argv[])
 {
-	setlocale(LC_ALL, "Russian");
+	setlocale(LC_ALL, "Russian"); // Настройка языка консоли
 	try {
+		// Проверяем количество атрибутов
 		if (argc < 2) {
 			throw invalid_argument("Адресс файла с входными данными не указан.");
 		}
@@ -16,15 +17,22 @@ int main(int argc, char* argv[])
 		{
 			throw invalid_argument("Адресс для записи входных данных не указан.");
 		}
+
 		else {
-			vector<string> input = readSequence(argv[1]);
+			vector<string> input = readSequence(argv[1]); // Считываем данные из файла
+
+			// Если файл пустой, выводим сообщение об этом в консоли
 			if (input.size() == 0 or (input.size()==1 and input[0]=="")) {
 				throw invalid_argument("Входной файл пуст");
 			}
+
 			else
 			{
-				Node* tree = Node::turnStringVectorToTree(input);;
-				tree->updateNode();
+				Node* tree = Node::turnStringVectorToTree(input); // Преобразуем входную последовательность в дерево разбора математического выражения
+
+				tree->updateNode(); // Преобразуем дерево разбора матетматического
+
+				// Преобразуем дерево разбора математического в запись в обратной польской нотации и записываем в файл
 				vector<string> output = tree->turnTreeToStringVector();
 				writeSequence(argv[2], output);
 			}
@@ -32,15 +40,29 @@ int main(int argc, char* argv[])
 	}
 	catch (invalid_argument err)
 	{
+		// В случае срабатывания исключения, выводим в консоль соответствующее сообщение и ожидаем нажатие клавиши от пользователя
 		int a;
 		cout << err.what() << endl;
 		cin >> a;
 	}
+	int a; cin >> a;
+	/*
+	Node* tree = Node::turnStringVectorToTree({ "^","+","1","2","2.1" });
+	tree->updateNode();
+	vector<string> output = tree->turnTreeToStringVector();
+	for (auto o : output)
+	{
+		cout << o << " ";
+	}
+	*/
 }
 
 Node::Node(Node* n)
 {
-	type = n->type;
+	// Копируем тип узла
+	type = n->type; 
+
+	// Копируем значения соответствующие данному типу узла
 	if (type == Num)
 	{
 		value = n->value;
@@ -50,6 +72,8 @@ Node::Node(Node* n)
 	{
 		name = n->name;
 	}
+
+	// Рекурсивно копируем всех потомков данного узда
 	if (n->left)left = new Node(n->left);
 	else left = NULL;
 	if (n->right)right = new Node(n->right);
@@ -58,26 +82,31 @@ Node::Node(Node* n)
 
 Node* Node::turnStringVectorToTree(vector<string> input)
 {
-	Node* output = new Node();
-
+	Node* output = new Node(); // Дерево разбора математического выражения
+	// Проверяем размер входной последовательности
 	if (input.size() == 0)return output;
 	if (input.size() == 1 and input[0] == "")return output;
-	if (input.size() < 3)throw invalid_argument("Файл содержит оператор с исбыточным количеством аргументов. Возможно в конца файла есть лишний символ или пробел");
+	if (input.size() < 3)throw invalid_argument("Файл содержит оператор с недостаточным количеством аргументов.");
 
 	vector<string> stack;
 	int counter = 0;
 
+	// Считываем первый три значения со стека
 	stack.push_back(input[counter++]);
 	stack.push_back(input[counter++]);
 	stack.push_back(input[counter++]);
 
+	// Пока в стеке не останется одно значение
 	while (stack.size() > 1)
 	{
 		if (stack.size() > 2)
 		{
-			vector<string> triple{ stack[stack.size() - 3], stack[stack.size() - 2],stack[stack.size() - 1] }; // Три верхние элемента стэка
+			vector<string> triple{ stack[stack.size() - 3], stack[stack.size() - 2],stack[stack.size() - 1] }; // Тройка - Три верхние элемента стэка
+
+			// Если данная трока соответстввует типу (оператор, аргумент, аргумент)
 			if (isCorrectTriple(triple))
 			{
+				// Преобразуем тройку в поддерево
 				output = turnTripleToNode(triple); 
 
 				// Удаляем соответсвующий кортеж (три элемента) с вершины стэка
@@ -85,27 +114,34 @@ Node* Node::turnStringVectorToTree(vector<string> input)
 				stack.pop_back();
 				stack.pop_back();
 
+				// Добавляем индекс нового поддерева в стек
 				stack.push_back(addSubTree(output));
 			}
 			else
 			{
+				// Добавляем в стек следующее значение
 				stack.push_back(input[counter++]);
 			}
 
 		}
 		else
 		{
+			// Добавляем в стек следующее значение
 			stack.push_back(input[counter++]);
 		}
 	}
+	// Если остался только один элемент - этот элемент индекс полученного дерева
 	if (stack.size() == 1)
 	{
+		// Если обработаны не все элементы последовательности, значит последовательность содержит лишние элементы
 		if (counter != input.size())
 		{
 			throw invalid_argument("Файл содержит оператор с исбыточным количеством аргументов. Возможно в конца файла есть лишний символ или пробел");
 		}
+		// В output хранится последнее созданное дерево, индекс которого хранится в стеке
 		return output;
 	}
+	// Если с теке осталось более одного элемента, значит у одоного или нескольких операторов недостаточно аругментов
 	else
 	{
 		throw invalid_argument("Файл содержит оператор с недостаточным количеством аргументов.");
@@ -116,13 +152,17 @@ Node* Node::turnStringVectorToTree(vector<string> input)
 vector<string> Node::turnTreeToStringVector()
 {
 	vector<string> output;
+	// Копируем переменную name, чтобы скопировынное значение можно было изменять, не меняя оригинал.
+	string new_name = name;
+	// Добавляем в набор подстрок подстроку соответствующую типу данного узла
 	switch (type)
 	{
 	case Var:
-		output.push_back(name);
+		output.push_back(name); // Добавляем имя переменной
 		break;
 	case Num:
-		output.push_back(name);
+		for (int i = 0; i < new_name.size(); i++)if (new_name[i] == ',')new_name[i] = '.';
+		output.push_back(new_name); 
 		break;
 	case Plus:
 		output.push_back("+");
@@ -144,6 +184,7 @@ vector<string> Node::turnTreeToStringVector()
 		break;
 	default:break;
 	}
+	// Если у данного узла есть левый потомок, вызываем данную функцию для него
 	if (left)
 	{
 		vector<string> add = left->turnTreeToStringVector();
@@ -152,6 +193,7 @@ vector<string> Node::turnTreeToStringVector()
 			output.push_back(a);
 		}
 	}
+	// Если у данного узла есть правый потомок, вызываем данную функцию для него
 	if (right)
 	{
 		vector<string> add = right->turnTreeToStringVector();
@@ -183,6 +225,8 @@ Node* Node::turnTripleToNode(vector<string> triple)
 		break;
 	case Num:
 		root->left = new Node(Num);
+		// Заменяем запятую в числе на точку, так как функция atof в качестве разделителя дробной части принимает запятую
+		for (int i = 0; i < triple[2].size(); i++)if (triple[2][i] == '.')triple[2][i] = ',';
 		root->left->value = atof(triple[1].c_str());
 		root->left->name = triple[1];
 		break;
@@ -199,6 +243,8 @@ Node* Node::turnTripleToNode(vector<string> triple)
 		break;
 	case Num:
 		root->right = new Node(Num);
+		// Заменяем запятую в числе на точку, так как функция atof в качестве разделителя дробной части принимает запятую
+		for (int i = 0; i < triple[2].size(); i++)if (triple[2][i] == '.')triple[2][i] = ',';
 		root->right->value = atof(triple[2].c_str());
 		root->right->name = triple[2];
 		break;
@@ -293,7 +339,7 @@ bool Node::updateNode()
 			updateNode();
 		}
 		else {
-			if (right->value - int(right->value) == 0)
+			if (float(right->value) - int(right->value) == 0.f)
 			{
 				if (int(right->value) % 2 == 0)
 				{
@@ -457,8 +503,11 @@ nodeType defNodeType(string input)
 		isVarName *= isalpha(i) or isdigit(i) or i == '_';
 	}
 	if (isVarName)return Var;
-
-	throw invalid_argument("test");
-
+	if (input[0] == '+' or input[0] == '-' or input[0] == '/' or input[0] == '*' or input[0] == '^')
+	{
+		if (input[1] == '+' or input[1] == '-' or input[1] == '/' or input[1] == '*' or input[1] == '^')throw invalid_argument("В указанном файле отсутствует пробел между двумя или более операторами");
+		else throw invalid_argument("В указанном файле отсутствует пробел между оператором и числом (возможно имелся в виду знак числа). Программа поддерживает только целые положительные числа");
+	}
+		throw invalid_argument("Файл содержит запрещённые символы.");
 	return Unknown;
 }
