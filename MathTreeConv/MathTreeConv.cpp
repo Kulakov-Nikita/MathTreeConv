@@ -45,16 +45,6 @@ int main(int argc, char* argv[])
 		cout << err.what() << endl;
 		cin >> a;
 	}
-	int a; cin >> a;
-	/*
-	Node* tree = Node::turnStringVectorToTree({ "^","+","1","2","2.1" });
-	tree->updateNode();
-	vector<string> output = tree->turnTreeToStringVector();
-	for (auto o : output)
-	{
-		cout << o << " ";
-	}
-	*/
 }
 
 Node::Node(Node* n)
@@ -458,6 +448,7 @@ vector<string> readSequence(string link)
 
 void writeSequence(string link, vector<string> output)
 {
+	std::setlocale(LC_ALL, "rus_rus.866");
 	ofstream file(link);
 	if (not file.is_open())throw invalid_argument("Неверно указан файл для выходных данных. Возможно, указанного расположения не существует или нет прав на запись.");
 	for (auto i : output)
