@@ -19,13 +19,31 @@ namespace TestturnStringVectorToTree
 		TEST_METHOD(OneArgument)
 		{
 			Assert::ExpectException<std::invalid_argument>([]() {
-				Node::turnTripleToNode({ "+","1" });
+				Node::turnStringVectorToTree({ "+","1" });
 				});
 		}
 		TEST_METHOD(TooManyArgument)
 		{
 			Assert::ExpectException<std::invalid_argument>([]() {
-				Node::turnTripleToNode({ "+","1","2","3" });
+				Node::turnStringVectorToTree({ "+","1","2","3" });
+				});
+		}
+		TEST_METHOD(TooManyOperations)
+		{
+			Assert::ExpectException<std::invalid_argument>([]() {
+				Node::turnStringVectorToTree({ "+","+","+","1" });
+				});
+		}
+		TEST_METHOD(WordHello)
+		{
+			Assert::ExpectException<std::invalid_argument>([]() {
+				Node::turnStringVectorToTree({ "Hello" });
+				});
+		}
+		TEST_METHOD(NoPolandNotation)
+		{
+			Assert::ExpectException<std::invalid_argument>([]() {
+				Node::turnStringVectorToTree({ "5","+","1" });
 				});
 		}
 		TEST_METHOD(NoOperator)

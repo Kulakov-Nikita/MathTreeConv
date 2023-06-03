@@ -8,6 +8,7 @@ vector<Node*> forest;
 int main(int argc, char* argv[])
 {
 	setlocale(LC_ALL, "Russian"); // Настройка языка консоли
+	
 	try {
 		// Проверяем количество атрибутов
 		if (argc < 2) {
@@ -17,7 +18,6 @@ int main(int argc, char* argv[])
 		{
 			throw invalid_argument("Адресс для записи входных данных не указан.");
 		}
-
 		else {
 			vector<string> input = readSequence(argv[1]); // Считываем данные из файла
 
@@ -110,7 +110,8 @@ Node* Node::turnStringVectorToTree(vector<string> input)
 			else
 			{
 				// Добавляем в стек следующее значение
-				stack.push_back(input[counter++]);
+				if (input.size() > counter)stack.push_back(input[counter++]);
+				else throw invalid_argument("Файл содержит оператор с недостаточным количеством аргументов.");
 			}
 
 		}
