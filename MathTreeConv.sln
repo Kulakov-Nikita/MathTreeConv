@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.5.33530.505
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31321.278
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MathTreeConv", "MathTreeConv\MathTreeConv.vcxproj", "{08EF5CDD-7B53-4097-9981-7823979362A3}"
 EndProject
@@ -20,6 +20,21 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test_findSunTree", "Test_findSunTree\Test_findSunTree.vcxproj", "{0EB0E530-8FB3-499E-91C1-40AF87355DD6}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test_defNodeType", "Test_defNodeType\Test_defNodeType.vcxproj", "{3EB40FB5-3833-4688-BF53-FD99DF4A47FB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{9F7090FC-3362-4E4F-B784-92C51EDB8E35}"
+	ProjectSection(SolutionItems) = preProject
+		tests\in1.txt = tests\in1.txt
+		tests\in10.txt = tests\in10.txt
+		tests\in2.txt = tests\in2.txt
+		tests\in3.txt = tests\in3.txt
+		tests\in4.txt = tests\in4.txt
+		tests\in5.txt = tests\in5.txt
+		tests\in6.txt = tests\in6.txt
+		tests\in7.txt = tests\in7.txt
+		tests\in8.txt = tests\in8.txt
+		tests\in9.txt = tests\in9.txt
+		tests\test.bat = tests\test.bat
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
