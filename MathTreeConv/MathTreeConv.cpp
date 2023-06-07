@@ -72,40 +72,49 @@ Node::Node(Node* n)
 
 Node* Node::turnStringVectorToTree(vector<string> input)
 {
-	Node* output = new Node(); // Дерево разбора математического выражения
-	// Проверяем размер входной последовательности
-	if (input.size() == 0)return output;
-	if (input.size() == 1 and input[0] == "")return output;
-	if (input.size() < 3)throw invalid_argument("Файл содержит оператор с недостаточным количеством аргументов.");
-
-	vector<string> stack;
-	int counter = 0;
-
-	// Считываем первый три значения со стека
-	stack.push_back(input[counter++]);
-	stack.push_back(input[counter++]);
-	stack.push_back(input[counter++]);
-
-	// Пока в стеке не останется одно значение
-	while (stack.size() > 1)
+	try
 	{
-		if (stack.size() > 2)
+		Node* output = new Node(); // Дерево разбора математического выражения
+		// Проверяем размер входной последовательности
+		if (input.size() == 0)return output;
+		if (input.size() == 1 and input[0] == "")return output;
+		if (input.size() < 3)throw invalid_argument("Файл содержит оператор с недостаточным количеством аргументов.");
+
+		vector<string> stack;
+		int counter = 0;
+
+		// Считываем первый три значения со стека
+		stack.push_back(input[counter++]);
+		stack.push_back(input[counter++]);
+		stack.push_back(input[counter++]);
+
+		// Пока в стеке не останется одно значение
+		while (stack.size() > 1)
 		{
-			vector<string> triple{ stack[stack.size() - 3], stack[stack.size() - 2],stack[stack.size() - 1] }; // Тройка - Три верхние элемента стэка
-
-			// Если данная трока соответстввует типу (оператор, аргумент, аргумент)
-			if (isCorrectTriple(triple))
+			if (stack.size() > 2)
 			{
-				// Преобразуем тройку в поддерево
-				output = turnTripleToNode(triple); 
+				vector<string> triple{ stack[stack.size() - 3], stack[stack.size() - 2],stack[stack.size() - 1] }; // Тройка - Три верхние элемента стэка
 
-				// Удаляем соответсвующий кортеж (три элемента) с вершины стэка
-				stack.pop_back();
-				stack.pop_back();
-				stack.pop_back();
+				// Если данная трока соответстввует типу (оператор, аргумент, аргумент)
+				if (isCorrectTriple(triple))
+				{
+					// Преобразуем тройку в поддерево
+					output = turnTripleToNode(triple);
 
-				// Добавляем индекс нового поддерева в стек
-				stack.push_back(addSubTree(output));
+					// Удаляем соответсвующий кортеж (три элемента) с вершины стэка
+					stack.pop_back();
+					stack.pop_back();
+					stack.pop_back();
+
+					// Добавляем индекс нового поддерева в стек
+					stack.push_back(addSubTree(output));
+				}
+				else
+				{
+					// Добавляем в стек следующее значение
+					stack.push_back(input[counter++]);
+				}
+
 			}
 			else
 			{
@@ -113,29 +122,27 @@ Node* Node::turnStringVectorToTree(vector<string> input)
 				if (input.size() > counter)stack.push_back(input[counter++]);
 				else throw invalid_argument("Файл содержит оператор с недостаточным количеством аргументов.");
 			}
-
 		}
+		// Если остался только один элемент - этот элемент индекс полученного дерева
+		if (stack.size() == 1)
+		{
+			// Если обработаны не все элементы последовательности, значит последовательность содержит лишние элементы
+			if (counter != input.size())
+			{
+				throw invalid_argument("Файл содержит оператор с исбыточным количеством аргументов. Возможно в конца файла есть лишний символ или пробел");
+			}
+			// В output хранится последнее созданное дерево, индекс которого хранится в стеке
+			return output;
+		}
+		// Если с теке осталось более одного элемента, значит у одоного или нескольких операторов недостаточно аругментов
 		else
 		{
-			// Добавляем в стек следующее значение
-			stack.push_back(input[counter++]);
+			throw invalid_argument("Файл содержит оператор с недостаточным количеством аргументов.");
 		}
 	}
-	// Если остался только один элемент - этот элемент индекс полученного дерева
-	if (stack.size() == 1)
+	catch (invalid_argument err)
 	{
-		// Если обработаны не все элементы последовательности, значит последовательность содержит лишние элементы
-		if (counter != input.size())
-		{
-			throw invalid_argument("Файл содержит оператор с исбыточным количеством аргументов. Возможно в конца файла есть лишний символ или пробел");
-		}
-		// В output хранится последнее созданное дерево, индекс которого хранится в стеке
-		return output;
-	}
-	// Если с теке осталось более одного элемента, значит у одоного или нескольких операторов недостаточно аругментов
-	else
-	{
-		throw invalid_argument("Файл содержит оператор с недостаточным количеством аргументов.");
+		throw err;
 	}
 
 }
@@ -198,54 +205,61 @@ vector<string> Node::turnTreeToStringVector()
 
 Node* Node::turnTripleToNode(vector<string> triple)
 {
-	// Вызов исключений
-	if(triple.size() < 3)throw invalid_argument("Для создания поддерева не хватает входных значений.");
-	if(triple.size() > 3)throw invalid_argument("Слишком много значений для создания поддерева.");
-	if(defNodeType(triple[0])<Plus or defNodeType(triple[0]) == SubTree)throw invalid_argument("Создание поддерева невозможно, так как отсутствует оператор.");
-	if( (defNodeType(triple[1]) != Num and defNodeType(triple[1]) != Var and defNodeType(triple[1]) != SubTree) or 
-		(defNodeType(triple[2]) != Num and defNodeType(triple[2]) != Var and defNodeType(triple[2]) != SubTree) )
-		throw invalid_argument("Создание поддерева невозможно, так как отсутствуют аргументы.");
-
-	// Создаём корень
-	Node* root = new Node(defNodeType(triple[0]));
-	// добавляем левого потомка
-	switch (defNodeType(triple[1]))
+	try
 	{
-	case SubTree:
-		root->left = findSubTree(triple[1]);
-		break;
-	case Num:
-		root->left = new Node(Num);
-		// Заменяем запятую в числе на точку, так как функция atof в качестве разделителя дробной части принимает запятую
-		for (int i = 0; i < triple[2].size(); i++)if (triple[2][i] == '.')triple[2][i] = ',';
-		root->left->value = atof(triple[1].c_str());
-		root->left->name = triple[1];
-		break;
-	case Var:
-		root->left = new Node(Var);
-		root->left->name = triple[1];
-	default:break;
-	}
-	// Добавляем правого потомка
-	switch (defNodeType(triple[2]))
-	{
-	case SubTree:
-		root->right = findSubTree(triple[2]);
-		break;
-	case Num:
-		root->right = new Node(Num);
-		// Заменяем точку в числе на запятую, так как функция atof в качестве разделителя дробной части принимает запятую
-		for (int i = 0; i < triple[2].size(); i++)if (triple[2][i] == '.')triple[2][i] = ',';
-		root->right->value = atof(triple[2].c_str());
-		root->right->name = triple[2];
-		break;
-	case Var:
-		root->right = new Node(Var);
-		root->right->name = triple[2];
-	default:break;
-	}
+		// Вызов исключений
+		if (triple.size() < 3)throw invalid_argument("Для создания поддерева не хватает входных значений.");
+		if (triple.size() > 3)throw invalid_argument("Слишком много значений для создания поддерева.");
+		if (defNodeType(triple[0]) < Plus or defNodeType(triple[0]) == SubTree)throw invalid_argument("Создание поддерева невозможно, так как отсутствует оператор.");
+		if ((defNodeType(triple[1]) != Num and defNodeType(triple[1]) != Var and defNodeType(triple[1]) != SubTree) or
+			(defNodeType(triple[2]) != Num and defNodeType(triple[2]) != Var and defNodeType(triple[2]) != SubTree))
+			throw invalid_argument("Создание поддерева невозможно, так как отсутствуют аргументы.");
 
-	return root;
+		// Создаём корень
+		Node* root = new Node(defNodeType(triple[0]));
+		// добавляем левого потомка
+		switch (defNodeType(triple[1]))
+		{
+		case SubTree:
+			root->left = findSubTree(triple[1]);
+			break;
+		case Num:
+			root->left = new Node(Num);
+			// Заменяем запятую в числе на точку, так как функция atof в качестве разделителя дробной части принимает запятую
+			for (int i = 0; i < triple[2].size(); i++)if (triple[2][i] == '.')triple[2][i] = ',';
+			root->left->value = atof(triple[1].c_str());
+			root->left->name = triple[1];
+			break;
+		case Var:
+			root->left = new Node(Var);
+			root->left->name = triple[1];
+		default:break;
+		}
+		// Добавляем правого потомка
+		switch (defNodeType(triple[2]))
+		{
+		case SubTree:
+			root->right = findSubTree(triple[2]);
+			break;
+		case Num:
+			root->right = new Node(Num);
+			// Заменяем точку в числе на запятую, так как функция atof в качестве разделителя дробной части принимает запятую
+			for (int i = 0; i < triple[2].size(); i++)if (triple[2][i] == '.')triple[2][i] = ',';
+			root->right->value = atof(triple[2].c_str());
+			root->right->name = triple[2];
+			break;
+		case Var:
+			root->right = new Node(Var);
+			root->right->name = triple[2];
+		default:break;
+		}
+
+		return root;
+	}
+	catch (invalid_argument err)
+	{
+		throw err;
+	}
 }
 
 bool Node::updateNode()
@@ -449,7 +463,6 @@ vector<string> readSequence(string link)
 
 void writeSequence(string link, vector<string> output)
 {
-	std::setlocale(LC_ALL, "rus_rus.866");
 	ofstream file(link);
 	if (not file.is_open())throw invalid_argument("Неверно указан файл для выходных данных. Возможно, указанного расположения не существует или нет прав на запись.");
 	for (auto i : output)
@@ -461,17 +474,24 @@ void writeSequence(string link, vector<string> output)
 
 bool isCorrectTriple(vector<string> input)
 {
-	if (defNodeType(input[0]) == Plus or defNodeType(input[0]) == Minus or defNodeType(input[0]) == Mul or defNodeType(input[0]) == Div or defNodeType(input[0]) == Pow)
+	try
 	{
-		if (defNodeType(input[1]) == Var or defNodeType(input[1]) == Num or defNodeType(input[1]) == SubTree)
+		if (defNodeType(input[0]) == Plus or defNodeType(input[0]) == Minus or defNodeType(input[0]) == Mul or defNodeType(input[0]) == Div or defNodeType(input[0]) == Pow)
 		{
-			if (defNodeType(input[2]) == Var or defNodeType(input[2]) == Num or defNodeType(input[2]) == SubTree)
+			if (defNodeType(input[1]) == Var or defNodeType(input[1]) == Num or defNodeType(input[1]) == SubTree)
 			{
-				return true;
+				if (defNodeType(input[2]) == Var or defNodeType(input[2]) == Num or defNodeType(input[2]) == SubTree)
+				{
+					return true;
+				}
 			}
 		}
+		return false;
 	}
-	return false;
+	catch (invalid_argument err)
+	{
+		throw err;
+	}
 }
 
 string addSubTree(Node* input)
