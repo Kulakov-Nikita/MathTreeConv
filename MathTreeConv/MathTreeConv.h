@@ -2,6 +2,7 @@
 #include<string>
 #include<string.h>
 #include<vector>
+#include<list>
 using namespace std;
 enum nodeType{Unknown,Var,Num,Plus,Minus,Mul,Div,Pow,SubTree};
 

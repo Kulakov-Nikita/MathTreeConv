@@ -1,6 +1,5 @@
 ﻿#include "MathTreeConv.h"
 #include <fstream>
-#include <list>
 using namespace std;
 
 /*!
@@ -208,7 +207,7 @@ list<string> Node::turnTreeToStringVector()
 	// Если у данного узла есть левый потомок, вызываем данную функцию для него
 	if (left)
 	{
-		vector<string> add = left->turnTreeToStringVector();
+		list<string> add = left->turnTreeToStringVector();
 		for (auto a : add)
 		{
 			output.push_back(a);
@@ -217,7 +216,7 @@ list<string> Node::turnTreeToStringVector()
 	// Если у данного узла есть правый потомок, вызываем данную функцию для него
 	if (right)
 	{
-		vector<string> add = right->turnTreeToStringVector();
+		list<string> add = right->turnTreeToStringVector();
 		for (auto a : add)
 		{
 			output.push_back(a);
@@ -484,7 +483,7 @@ vector<string> readSequence(string link)
 	return output;
 }
 
-void writeSequence(string link, vector<string> output)
+void writeSequence(string link, list<string> output)
 {
 	ofstream file(link);
 	if (not file.is_open())throw invalid_argument("Неверно указан файл для выходных данных. Возможно, указанного расположения не существует или нет прав на запись.");
