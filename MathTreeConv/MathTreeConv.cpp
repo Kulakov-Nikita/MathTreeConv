@@ -169,9 +169,8 @@ Node* Node::turnStringVectorToTree(vector<string> input)
 
 }
 
-list<string> Node::turnTreeToStringVector()
+list<string> Node::turnTreeToStringVector(list<string> &output)
 {
-	list<string> output;
 	// Копируем переменную name, чтобы скопировынное значение можно было изменять, не меняя оригинал.
 	string new_name = name;
 	// Добавляем в набор подстрок подстроку соответствующую типу данного узла
