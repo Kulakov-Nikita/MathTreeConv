@@ -6,6 +6,11 @@ using namespace std;
 enum nodeType{Unknown,Var,Num,Plus,Minus,Mul,Div,Pow,SubTree};
 
 
+/*!
+*\file
+*\brief Файл содержит заголовки функций программы, а также класс, описывающий узел дерева.
+*/
+
 /**
 * @brief Класс, представляющий узел дерева разбора математического выражения
 */
