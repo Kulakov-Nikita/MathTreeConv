@@ -1,5 +1,6 @@
 ﻿#include "MathTreeConv.h"
 #include <fstream>
+#include <list>
 using namespace std;
 
 /*!
@@ -55,7 +56,7 @@ int main(int argc, char* argv[])
 				tree->updateNode(); // Преобразуем дерево разбора матетматического
 
 				// Преобразуем дерево разбора математического в запись в обратной польской нотации и записываем в файл
-				vector<string> output = tree->turnTreeToStringVector();
+				list<string> output = tree->turnTreeToStringVector();
 				writeSequence(argv[2], output);
 			}
 		}
@@ -169,9 +170,9 @@ Node* Node::turnStringVectorToTree(vector<string> input)
 
 }
 
-vector<string> Node::turnTreeToStringVector()
+list<string> Node::turnTreeToStringVector()
 {
-	vector<string> output;
+	list<string> output;
 	// Копируем переменную name, чтобы скопировынное значение можно было изменять, не меняя оригинал.
 	string new_name = name;
 	// Добавляем в набор подстрок подстроку соответствующую типу данного узла

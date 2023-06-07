@@ -50,7 +50,7 @@ public:
 	*  Преобразует дерево развбора математического выражения в запись в виде обратной польской нотации
 	* \return - последовательность подстрок представляющая запись математического выражения
 	*/
-	vector<string> turnTreeToStringVector();
+	list<string> turnTreeToStringVector();
 
 	/*!
 	* Преобразует запись в виде обратной польской в дерево разбора математического выражения
@@ -106,7 +106,7 @@ vector<string> readSequence(string link);
 * \param[in] output - записываемая последовательность подстрок
 * \throw - ошибка при записи в файл
 */
-void writeSequence(string link, vector<string> output);
+void writeSequence(string link, list<string> output);
 
 /*!
 * Проверяем соотвтествие введёного кортежа виду (оператор, аргумент, аргумент)
