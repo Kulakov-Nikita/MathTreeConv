@@ -13,16 +13,20 @@ namespace TestturnTreeToStringVector
 		TEST_METHOD(EmptyVector)
 		{
 			vector<string> input{ "" };
+			list<string> input1{ "" };
 			Node* node = Node::turnStringVectorToTree(input);
-			vector<string> output = node->turnTreeToStringVector();
-			Assert::IsTrue(output == input);
+			list<string> output;
+			node->turnTreeToStringVector(output);
+			Assert::IsTrue(output == input1);
 		}
 		TEST_METHOD(SimpleTree)
 		{
-			vector<string> input{ "+","1","2" };
+			list<string> input{ "+","1","2" };
+			vector<string> input1{ "+","1","2" };
 			try {
-				Node* node = Node::turnStringVectorToTree(input);
-				vector<string> output = node->turnTreeToStringVector();
+				Node* node = Node::turnStringVectorToTree(input1);
+				list<string> output;
+				node->turnTreeToStringVector(output);
 				Assert::IsTrue(output == input);
 			}
 			catch (string err)
@@ -34,10 +38,12 @@ namespace TestturnTreeToStringVector
 		TEST_METHOD(ComplexTree)
 		{
 			vector<string> input{ "*","+","1","2","/","3","^","4","5" };
+			list<string> input1{ "*","+","1","2","/","3","^","4","5" };
 			try {
 				Node* node = Node::turnStringVectorToTree(input);
-				vector<string> output = node->turnTreeToStringVector();
-				Assert::IsTrue(output == input);
+				list<string> output;
+				node->turnTreeToStringVector(output);
+				Assert::IsTrue(output == input1);
 			}
 			catch (string err)
 			{

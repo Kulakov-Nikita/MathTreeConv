@@ -25,18 +25,21 @@ namespace TestupdateNode
 		TEST_METHOD(SumOfNumAndSum)
 		{
 			vector<string> input{ "+","1","+","2","3" };
+			list<string> input1{ "+","1","+","2","3" };
 			Node* node = Node::turnStringVectorToTree(input);
 			node->updateNode();
-			vector<string> output = node->turnTreeToStringVector();
-			Assert::IsTrue(output == input);
+			list<string> output;
+			node->turnTreeToStringVector(output);
+			Assert::IsTrue(output == input1);
 		}
 		TEST_METHOD(MultipliesOfNumAndSum)
 		{
 			vector<string> input{ "*","1","+","2","3" };
 			Node* node = Node::turnStringVectorToTree(input);
 			node->updateNode();
-			vector<string> output = node->turnTreeToStringVector();
-			vector<string> correctAnser{ "+","*","2","1","*","3","1" };
+			list<string> output;
+			node->turnTreeToStringVector(output);
+			list<string> correctAnser{ "+","*","2","1","*","3","1" };
 			Assert::IsTrue(output == correctAnser);
 		}
 		TEST_METHOD(MultipliesOfSumAndSum)
@@ -44,8 +47,9 @@ namespace TestupdateNode
 			vector<string> input{ "*","+","1","2","+","3","4"};
 			Node* node = Node::turnStringVectorToTree(input);
 			node->updateNode();
-			vector<string> output = node->turnTreeToStringVector();
-			vector<string> correctAnser{ "+","+","*","3","1","*","4","1","+","*","3","2","*","4","2"};
+			list<string> output;
+			node->turnTreeToStringVector(output);
+			list<string> correctAnser{ "+","+","*","3","1","*","4","1","+","*","3","2","*","4","2"};
 			Assert::IsTrue(output == correctAnser);
 		}
 		TEST_METHOD(MultipliesOfSumAndSub)
@@ -53,33 +57,39 @@ namespace TestupdateNode
 			vector<string> input{ "*","+","1","2","-","3","4" };
 			Node* node = Node::turnStringVectorToTree(input);
 			node->updateNode();
-			vector<string> output = node->turnTreeToStringVector();
-			vector<string> correctAnser{ "+","-","*","3","1","*","4","1","-","*","3","2","*","4","2" };
+			list<string> output;
+			node->turnTreeToStringVector(output);
+			list<string> correctAnser{ "+","-","*","3","1","*","4","1","-","*","3","2","*","4","2" };
 			Assert::IsTrue(output == correctAnser);
 		}
 		TEST_METHOD(MultipliesOfNumAndMultiplies)
 		{
 			vector<string> input{ "*","1","*","2","3" };
+			list<string> input1{ "*","1","*","2","3" };
 			Node* node = Node::turnStringVectorToTree(input);
 			node->updateNode();
-			vector<string> output = node->turnTreeToStringVector();
-			Assert::IsTrue(output == input);
+			list<string> output;
+			node->turnTreeToStringVector(output);
+			Assert::IsTrue(output == input1);
 		}
 		TEST_METHOD(DivNumBySum)
 		{
 			vector<string> input{ "/","1","/","2","3" };
+			list<string> input1{ "/","1","/","2","3" };
 			Node* node = Node::turnStringVectorToTree(input);
 			node->updateNode();
-			vector<string> output = node->turnTreeToStringVector();
-			Assert::IsTrue(output == input);
+			list<string> output;
+			node->turnTreeToStringVector(output);
+			Assert::IsTrue(output == input1);
 		}
 		TEST_METHOD(DivSumByNum)
 		{
 			vector<string> input{ "/","+","1","2","3"};
 			Node* node = Node::turnStringVectorToTree(input);
 			node->updateNode();
-			vector<string> output = node->turnTreeToStringVector();
-			vector<string> correctAnser{ "+","/","1","3","/","2","3" };
+			list<string> output;
+			node->turnTreeToStringVector(output);
+			list<string> correctAnser{ "+","/","1","3","/","2","3" };
 			Assert::IsTrue(output == correctAnser);
 		}
 		TEST_METHOD(PowMultipliesByNum)
@@ -87,8 +97,9 @@ namespace TestupdateNode
 			vector<string> input{ "^","*","1","2","3" };
 			Node* node = Node::turnStringVectorToTree(input);
 			node->updateNode();
-			vector<string> output = node->turnTreeToStringVector();
-			vector<string> correctAnser{ "*","^","1","3","^","2","3" };
+			list<string> output;
+			node->turnTreeToStringVector(output);
+			list<string> correctAnser{ "*","^","1","3","^","2","3" };
 			Assert::IsTrue(output == correctAnser);
 		}
 		TEST_METHOD(PowDivByNum)
@@ -96,8 +107,9 @@ namespace TestupdateNode
 			vector<string> input{ "^","/","1","2","3" };
 			Node* node = Node::turnStringVectorToTree(input);
 			node->updateNode();
-			vector<string> output = node->turnTreeToStringVector();
-			vector<string> correctAnser{ "/","^","1","3","^","2","3" };
+			list<string> output;
+			node->turnTreeToStringVector(output);
+			list<string> correctAnser{ "/","^","1","3","^","2","3" };
 			Assert::IsTrue(output == correctAnser);
 		}
 		TEST_METHOD(PowSumByNum)
@@ -105,25 +117,29 @@ namespace TestupdateNode
 			vector<string> input{ "^","+","1","2","2" };
 			Node* node = Node::turnStringVectorToTree(input);
 			node->updateNode();
-			vector<string> output = node->turnTreeToStringVector();
-			vector<string> correctAnser{ "+","+","*","1","1","*","2","1","+","*","1","2","*","2","2" };
+			list<string> output;
+			node->turnTreeToStringVector(output);
+			list<string> correctAnser{ "+","+","*","1","1","*","2","1","+","*","1","2","*","2","2" };
 			Assert::IsTrue(output == correctAnser);
 		}
 		TEST_METHOD(PowSumByNotNum)
 		{
 			vector<string> input{ "^","+","1","2","A" };
+			list<string> input1{ "^","+","1","2","A" };
 			Node* node = Node::turnStringVectorToTree(input);
 			node->updateNode();
-			vector<string> output = node->turnTreeToStringVector();
-			Assert::IsTrue(output == input);
+			list<string> output;
+			node->turnTreeToStringVector(output);
+			Assert::IsTrue(output == input1);
 		}
 		TEST_METHOD(ComplexCase)
 		{
 			vector<string> input{ "^","/","-","+","5","3","1","7","2" };
 			Node* node = Node::turnStringVectorToTree(input);
 			node->updateNode();
-			vector<string> output = node->turnTreeToStringVector();
-			vector<string> correctAnser{ "-", "+", "-", "+", "/", "*", "5", "5", "^", "7", "2", "/", "*", "3", "5", "^", "7", "2", "/", "*", "1", "5", "^", "7", "2", "-", "+", "/", "*", "5", "3", "^", "7", "2", "/", "*", "3", "3", "^", "7", "2", "/", "*", "1", "3", "^", "7", "2", "-", "+", "/", "*", "5", "1", "^", "7", "2", "/", "*", "3", "1", "^", "7", "2", "/", "*", "1", "1", "^", "7", "2" };
+			list<string> output;
+			node->turnTreeToStringVector(output);
+			list<string> correctAnser{ "-", "+", "-", "+", "/", "*", "5", "5", "^", "7", "2", "/", "*", "3", "5", "^", "7", "2", "/", "*", "1", "5", "^", "7", "2", "-", "+", "/", "*", "5", "3", "^", "7", "2", "/", "*", "3", "3", "^", "7", "2", "/", "*", "1", "3", "^", "7", "2", "-", "+", "/", "*", "5", "1", "^", "7", "2", "/", "*", "3", "1", "^", "7", "2", "/", "*", "1", "1", "^", "7", "2" };
 			
 			Assert::IsTrue(output == correctAnser);
 		}

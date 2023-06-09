@@ -87,10 +87,12 @@ Node::Node(Node* n)
 	}
 
 	// Рекурсивно копируем всех потомков данного узда
-	if (n->left)left = new Node(n->left);
-	else left = NULL;
-	if (n->right)right = new Node(n->right);
-	else right = NULL;
+	//if (n->left)left = new Node(n->left);
+	//else left = NULL;
+	//if (n->right)right = new Node(n->right);
+	//else right = NULL;
+	left = n->left;
+	right = n->right;
 }
 
 Node* Node::turnStringVectorToTree(vector<string> input)
@@ -308,6 +310,7 @@ bool Node::updateNode()
 		// Первый(будующий левый) потомок
 		Node* first = new Node(type);
 		first->left = new Node(left->left);
+		//first->right = new Node(right);
 		first->right = new Node(right);
 
 		// Второй(будующий правый) потомок
@@ -335,9 +338,9 @@ bool Node::updateNode()
 		// Пример: (5 / 2) ^ 3 -> 5 ^ 3 / 2 ^ 3
 
 		// Первый(будущий левый) потомок
-		Node* first = new Node(type);
+		Node* first = new Node(type); 
 		first->left = new Node(left->left);
-		first->right = new Node(right);
+		first->right = right;
 
 		// Второй(будущий правый) потомок
 		Node* second = new Node(type);

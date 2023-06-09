@@ -53,6 +53,8 @@ public:
 	*/
 	void turnTreeToStringVector(list<string> &output);
 
+	Node* GetUpdatedNode();
+
 	/*!
 	* Преобразует запись в виде обратной польской в дерево разбора математического выражения
 	* \return - полученное дерево
