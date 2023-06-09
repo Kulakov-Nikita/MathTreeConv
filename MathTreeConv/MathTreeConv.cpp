@@ -55,7 +55,8 @@ int main(int argc, char* argv[])
 				tree->updateNode(); // Преобразуем дерево разбора матетматического
 
 				// Преобразуем дерево разбора математического в запись в обратной польской нотации и записываем в файл
-				list<string> output = tree->turnTreeToStringVector();
+				list<string> output;
+				tree->turnTreeToStringVector(output);
 				writeSequence(argv[2], output);
 			}
 		}
@@ -169,7 +170,7 @@ Node* Node::turnStringVectorToTree(vector<string> input)
 
 }
 
-list<string> Node::turnTreeToStringVector(list<string> &output)
+void Node::turnTreeToStringVector(list<string> &output)
 {
 	// Копируем переменную name, чтобы скопировынное значение можно было изменять, не меняя оригинал.
 	string new_name = name;
@@ -206,22 +207,13 @@ list<string> Node::turnTreeToStringVector(list<string> &output)
 	// Если у данного узла есть левый потомок, вызываем данную функцию для него
 	if (left)
 	{
-		list<string> add = left->turnTreeToStringVector();
-		for (auto a : add)
-		{
-			output.push_back(a);
-		}
+		left->turnTreeToStringVector(output);
 	}
 	// Если у данного узла есть правый потомок, вызываем данную функцию для него
 	if (right)
 	{
-		list<string> add = right->turnTreeToStringVector();
-		for (auto a : add)
-		{
-			output.push_back(a);
-		}
+		right->turnTreeToStringVector(output);
 	}
-	return output;
 }
 
 Node* Node::turnTripleToNode(vector<string> triple)
