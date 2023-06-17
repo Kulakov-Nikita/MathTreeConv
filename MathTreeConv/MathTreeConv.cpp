@@ -34,11 +34,11 @@ int main(int argc, char* argv[])
 	try {
 		// Проверяем количество атрибутов
 		if (argc < 2) {
-			throw invalid_argument("Адресс файла с входными данными не указан.");
+			throw invalid_argument("Неверно указан файл с входными данными. Возможно, файл не существует.");
 		}
 		else if (argc < 3)
 		{
-			throw invalid_argument("Адресс для записи входных данных не указан.");
+			throw invalid_argument("Неверно указан файл для выходных данных. Возможно, указанного расположения не существует или нет прав на запись.");
 		}
 		else {
 			vector<string> input = readSequence(argv[1]); // Считываем данные из файла
