@@ -109,6 +109,7 @@ Node* Node::turnStringVectorToTree(vector<string> input)
 		int counter = 0;
 
 		// Считываем первый три значения со стека
+
 		stack.push_back(input[counter++]);
 		stack.push_back(input[counter++]);
 		stack.push_back(input[counter++]);
@@ -137,15 +138,18 @@ Node* Node::turnStringVectorToTree(vector<string> input)
 				else
 				{
 					// Добавляем в стек следующее значение
-					stack.push_back(input[counter++]);
+
+					if (input.size() > counter)stack.push_back(input[counter++]);
+					else throw invalid_argument("Файл содержит оператор с недостаточным количеством аргументов");
 				}
 
 			}
 			else
 			{
 				// Добавляем в стек следующее значение
-				if (input.size() > counter)stack.push_back(input[counter++]);
-				else throw invalid_argument("Файл содержит оператор с недостаточным количеством аргументов.");
+				//if (input.size() > counter)stack.push_back(input[counter++]);
+				//else throw invalid_argument("Файл содержит оператор с недостаточным количеством аргументов.");
+				stack.push_back(input[counter++]);
 			}
 		}
 		// Если остался только один элемент - этот элемент индекс полученного дерева
